@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Nabung - Gampang!</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    #chat {
+      height: 300px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      overflow-y: auto;
+      background: white;
+      margin-bottom: 10px;
+    }
+    input {
+      width: 70%;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 15px;
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>AI Penasihat Nabung 💰</h2>
+  <div id="chat"></div>
+  <input type="text" id="input" placeholder="Contoh: Cara nabung 500rb/minggu?" />
+  <button onclick="tanyaAI()">Tanya</button>
+
+  <script>
+    // 🔑 GANTI DENGAN API KEY KAMU
+    const API_KEY = "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";
+
+    async function tanyaAI() {
+      const inputEl = document.getElementById("input");
+      const chat = document.getElementById("chat");
+      const pertanyaan = inputEl.value.trim();
+      if (!pertanyaan) return;
+
+      // Tampilkan pesan user
+      chat.innerHTML += `<p><b>Kamu:</b> ${pertanyaan}</p>`;
+      inputEl.value = "";
+      chat.scrollTop = chat.scrollHeight;
+
+      // Kirim ke AI
+      try {
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${API_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "meta-llama/llama-3.2-3b-instruct:free",
+            messages: [
+              { role: "system", content: "Kamu adalah AI penasihat keuangan yang ramah dan suka membantu orang nabung. Jawab dengan semangat, praktis, dan sederhana." },
+              { role: "user", content: pertanyaan }
+            ]
+          })
+        });
+
+        const data = await res.json();
+        const jawaban = data.choices[0]?.message?.content || "Maaf, AI sedang lelah 😅";
+
+        chat.innerHTML += `<p><b>AI:</b> ${jawaban}</p>`;
+        chat.scrollTop = chat.scrollHeight;
+      } catch (err) {
+        chat.innerHTML += `<p><b>AI:</b> Gagal terhubung ke AI. Cek koneksi atau API key.</p>`;
+      }
+    }
+
+    // Enter untuk kirim
+    document.getElementById("input").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") tanyaAI();
+    });
+  </script>
+</body>
+</html>
