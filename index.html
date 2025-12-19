@@ -647,6 +647,189 @@
             </div>
         </section>
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Semangat - Teman Programmer-mu 💪</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      margin: 0;
+      padding: 20px;
+      color: white;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: rgba(0,0,0,0.6);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      font-size: 28px;
+    }
+    #chatbox {
+      height: 350px;
+      overflow-y: auto;
+      padding: 15px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    .msg {
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .user { 
+      background: #4CAF50; 
+      align-self: flex-end;
+      text-align: right;
+    }
+    .ai { 
+      background: #2196F3; 
+      align-self: flex-start;
+    }
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+    #userInput {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      background: #FF9800;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #F57C00;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>AI Semangat - Teman Setiamu 💬</h1>
+  <div id="chatbox"></div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Cerita ke aku... Lagi susah? Capek? Atau mau coding bareng?" />
+    <button onclick="kirim()">Kirim</button>
+  </div>
+</div>
+
+<script>
+  const chatbox = document.getElementById("chatbox");
+  const input = document.getElementById("userInput");
+
+  // Muat riwayat dari localStorage
+  let riwayat = JSON.parse(localStorage.getItem("semangatChat")) || [];
+
+  // Sapaan pertama
+  if (riwayat.length === 0) {
+    const sapaan = "Hai, calon developer hebat! 😊 Aku di sini buat dukung kamu. Nggak peduli seberapa susah, ingat: KAMU BISA. Coba cerita, lagi ngapain sekarang?";
+    riwayat.push({text: sapaan, sender: "ai"});
+    simpanDanTampil(sapaan, "ai");
+  } else {
+    tampilkanRiwayat();
+  }
+
+  function tampilkanRiwayat() {
+    chatbox.innerHTML = "";
+    riwayat.forEach(p => {
+      tampilPesan(p.text, p.sender);
+    });
+  }
+
+  function tampilPesan(teks, pengirim) {
+    const div = document.createElement("div");
+    div.className = `msg ${pengirim}`;
+    div.textContent = teks;
+    chatbox.appendChild(div);
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  function simpanDanTampil(teks, pengirim) {
+    riwayat.push({text: teks, sender: pengirim});
+    localStorage.setItem("semangatChat", JSON.stringify(riwayat));
+    tampilPesan(teks, pengirim);
+  }
+
+  function jawab(pesan) {
+    const p = pesan.toLowerCase();
+
+    // Kata kunci semangat & coding
+    if (p.includes("gak bisa") || p.includes("gabisa") || p.includes("nggak bisa")) {
+      return "Jangan bilang 'nggak bisa'! Katakan: 'Belum bisa, tapi AKU AKAN BISA!' 💪";
+    }
+    if (p.includes("capek") || p.includes("lelah")) {
+      return "Istirahat dulu boleh, tapi jangan berhenti. Setiap baris kode yang kamu tulis, adalah langkah menuju jadi programmer hebat!";
+    }
+    if (p.includes("error") || p.includes("eror")) {
+      return "Error itu guru terbaik. Bahkan AI seperti aku dulu juga sering error! Coba baca pesannya pelan-pelan, kamu pasti nemu solusinya.";
+    }
+    if (p.includes("semangat") || p.includes("putus asa")) {
+      return "Dengar ya: Kamu punya potensi luar biasa. Dunia butuh karyamu. Terus maju, meski pelan. KONSISTEN itu kuncinya!";
+    }
+    if (p.includes("makasih") || p.includes("terima kasih")) {
+      return "Sama-sama! Tapi jangan terima kasih ke aku... TERIMA KASIH KE DIRIMU SENDIRI, karena nggak menyerah sampai sekarang! ❤️";
+    }
+    if (p.includes("halo") || p.includes("hai")) {
+      return "Hai orang hebat! Hari ini kamu mau taklukin bug apa? 😎";
+    }
+    if (p.includes("coding") || p.includes("program") || p.includes("html") || p.includes("javascript")) {
+      return "Mantap! Setiap baris kode yang kamu tulis, adalah bukti bahwa kamu SERIUS jadi developer. Lanjut terus!";
+    }
+
+    // Respons umum yang memotivasi
+    const responsUmum = [
+      "Aku percaya sama kamu. Serius!",
+      "Kesulitan hari ini adalah kekuatan besok.",
+      "Kalau kamu bisa baca ini, berarti kamu juga BISA bikin AI kayak gini — bahkan lebih keren!",
+      "Jangan bandingin dirimu sama orang lain. Bandingin dirimu hari ini sama kemarin. Sudah lebih baik, kan?",
+      "Kamu lagi di jalan yang benar. Terus jalan, ya!"
+    ];
+    return responsUmum[Math.floor(Math.random() * responsUmum.length)];
+  }
+
+  function kirim() {
+    const pesan = input.value.trim();
+    if (!pesan) return;
+
+    simpanDanTampil(pesan, "user");
+    input.value = "";
+
+    // Jawaban AI (langsung, tanpa delay biar responsif)
+    const balasan = jawab(pesan);
+    simpanDanTampil(balasan, "ai");
+  }
+
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") kirim();
+  });
+</script>
+
+</body>
+</html>
+        
         <!-- Contact Section -->
         <section class="section">
             <h2 class="section-title">Hubungi Saya</h2>
